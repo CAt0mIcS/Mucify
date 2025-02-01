@@ -67,6 +67,7 @@ import androidx.navigation.NavController
 import com.tachyonmusic.app.R
 import com.tachyonmusic.core.data.constants.PlaceholderArtwork
 import com.tachyonmusic.core.data.constants.PlaybackType
+import com.tachyonmusic.core.domain.playback.Playback
 import com.tachyonmusic.presentation.BottomNavigationItem
 import com.tachyonmusic.presentation.core_components.HorizontalPlaybackView
 import com.tachyonmusic.presentation.core_components.SwipeDelete
@@ -264,7 +265,7 @@ object LibraryScreen :
                         contentModifier,
                         nativeAds.cycle(playback.mediaId.source.toIntOrNull() ?: 0)
                     )
-                } else {
+                } else if (playback.playbackType is PlaybackType.Playback) {
                     val updatedPlayback by rememberUpdatedState(playback)
                     var showArtworkSelectionDialog by remember { mutableStateOf(false) }
                     var showMetadataDialog by remember { mutableStateOf(false) }

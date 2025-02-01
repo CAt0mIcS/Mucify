@@ -1,15 +1,17 @@
 package com.tachyonmusic.core.data.constants
 
 sealed class PlaybackType(val value: Int) {
-    sealed class Song(value: Int) : PlaybackType(value) {
+    sealed class Playback(value: Int) : PlaybackType(value)
+
+    sealed class Song(value: Int) : Playback(value) {
         class Local : Song(0)
     }
 
-    sealed class Remix(value: Int) : PlaybackType(value) {
+    sealed class Remix(value: Int) : Playback(value) {
         class Local : Remix(1)
     }
 
-    sealed class Playlist(value: Int) : PlaybackType(value) {
+    sealed class Playlist(value: Int) : Playback(value) {
         class Local : Playlist(2)
     }
 
