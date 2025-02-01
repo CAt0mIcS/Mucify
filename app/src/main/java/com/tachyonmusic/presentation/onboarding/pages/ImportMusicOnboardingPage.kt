@@ -1,13 +1,19 @@
 package com.tachyonmusic.presentation.onboarding.pages
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -71,47 +78,61 @@ class ImportMusicOnboardingPage(override val index: Int) : OnboardingPage {
 
 
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .fillMaxHeight(0.7f),
-                    painter = painterResource(R.drawable.ic_equalizer), // TODO: Generate good images for everything
-                    contentDescription = "Pager Image"
-                )
                 Text(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(Theme.padding.large),
                     text = stringResource(R.string.import_music_onboarding_title),
-                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                    fontSize = MaterialTheme.typography.headlineMedium.fontSize,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
+                )
+
+                Image(
+                    modifier = Modifier.fillMaxWidth(.8f).aspectRatio(1.1f),
+                    painter = painterResource(R.drawable.ic_equalizer), // TODO: Generate good images for everything
+                    contentDescription = "Pager Image"
                 )
 
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 40.dp)
-                        .padding(top = 20.dp),
+                        .padding(horizontal = Theme.padding.large)
+                        .padding(top = Theme.padding.medium),
                     text = stringResource(R.string.import_music_onboarding_description),
-                    fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
                 )
 
-                Row(modifier = Modifier.weight(1f).padding(horizontal = Theme.padding.large)) {
+                Row(
+                    modifier = Modifier
+                        .padding(Theme.padding.medium)
+                        .padding(top = Theme.padding.medium)
+                        .height(IntrinsicSize.Max)
+                ) {
                     AnimatedButton(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .padding(end = Theme.padding.small)
+                            .shadow(Theme.shadow.medium, shape = Theme.shapes.large),
                         visible = pagerState.currentPage == index,
                         onClick = { showUriPermissionDialog = true }) {
                         Text("Select Music Directory")
                     }
 
                     AnimatedButton(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .padding(start = Theme.padding.small)
+                            .shadow(Theme.shadow.medium, shape = Theme.shapes.large),
                         visible = pagerState.currentPage == index,
                         onClick = { showImportDbDialog = true }) {
                         Text("Import Database")

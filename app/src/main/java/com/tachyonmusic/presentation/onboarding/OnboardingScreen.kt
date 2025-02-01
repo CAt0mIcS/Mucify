@@ -1,6 +1,12 @@
 package com.tachyonmusic.presentation.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tachyonmusic.presentation.onboarding.pages.FirstOnboardingPage
 import com.tachyonmusic.presentation.onboarding.pages.ImportMusicOnboardingPage
 import com.tachyonmusic.presentation.onboarding.pages.LastOnboardingPage
+import com.tachyonmusic.presentation.theme.Theme
 import com.tachyonmusic.presentation.theme.interpolate
 import kotlinx.coroutines.flow.MutableStateFlow
 import mx.platacard.pagerindicator.PagerIndicatorOrientation
@@ -72,7 +79,8 @@ object OnboardingScreen {
             PagerWormIndicator(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .weight(1f),
+                    .weight(1f)
+                    .padding(vertical = Theme.padding.large),
                 pagerState = pagerState,
                 activeDotColor = MaterialTheme.colorScheme.primary,
                 dotColor = MaterialTheme.colorScheme.primary.interpolate(MaterialTheme.colorScheme.onPrimaryContainer)
@@ -82,7 +90,9 @@ object OnboardingScreen {
             )
 
             AnimatedButton(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(top = Theme.padding.large),
                 pagerState.currentPage == pages.last().index,
                 onClick = {
                     viewModel.saveOnboardingState(true)
@@ -103,13 +113,12 @@ fun AnimatedButton(
 ) {
     AnimatedVisibility(
         modifier = modifier,
-        visible = visible
+        visible = visible,
+        enter = fadeIn() + expandIn(),
+        exit = shrinkOut() + fadeOut(),
     ) {
         Button(
             onClick = onClick,
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.White
-            ),
             content = content
         )
     }

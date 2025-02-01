@@ -1,5 +1,6 @@
 package com.tachyonmusic.presentation.entry
 
+import android.app.ActivityManager
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
@@ -116,6 +117,16 @@ class ActivityMain : AppCompatActivity(), MediaBrowserController.EventListener {
     override fun onDestroy() {
         super.onDestroy()
         adInterface.release()
+
+//        /**
+//         * Reset app if onboarding was not completed. This can happen if the user closes the app
+//         * during onboarding
+//         * TODO: This doesn't work in onDestroy since the onboarding state (which page it's on)
+//         *  might not be destroyed when the activity is
+//         */
+//        if(!onboardingCompleted.value) {
+//            (getSystemService(ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
+//        }
     }
 
     override fun onNewIntent(intent: Intent?) {

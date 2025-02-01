@@ -77,6 +77,8 @@ class OnboardingViewModel @Inject constructor(
             // TODO: Handle null case for missingUri ^ and it.path >
             if (missingUri != null) {
                 _requiredMusicDirectoriesAfterDatabaseImport.update { missingUri.mapNotNull { it.encodedPath } }
+            } else {
+                _requiredMusicDirectoriesAfterDatabaseImport.update { emptyList() }
             }
 
             stateRepository.finishLoadingTask(
