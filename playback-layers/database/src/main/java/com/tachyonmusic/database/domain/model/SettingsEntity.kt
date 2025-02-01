@@ -32,8 +32,8 @@ data class SettingsEntity(
     var autoDownloadSongMetadataWifiOnly: Boolean = true,
     var combineDifferentPlaybackTypes: Boolean = false,
 
-    @ColumnInfo(defaultValue = "true")
-    var dynamicColors: Boolean = true,
+    @ColumnInfo(defaultValue = "false")
+    var dynamicColors: Boolean = false,
     var audioUpdateInterval: Duration = 100.ms,
     var maxPlaybacksInHistory: Int = 25,
     var seekForwardIncrement: Duration = 10.sec,

@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tachyonmusic.app.R
 import com.tachyonmusic.core.domain.TimingData
 import com.tachyonmusic.core.domain.TimingDataController
 import com.tachyonmusic.core.domain.isNullOrEmpty
@@ -14,6 +15,7 @@ import com.tachyonmusic.database.domain.model.SettingsEntity
 import com.tachyonmusic.database.domain.repository.DataRepository
 import com.tachyonmusic.database.domain.repository.RemixRepository
 import com.tachyonmusic.database.domain.repository.SettingsRepository
+import com.tachyonmusic.domain.model.RewardAd
 import com.tachyonmusic.domain.repository.AdInterface
 import com.tachyonmusic.domain.repository.MediaBrowserController
 import com.tachyonmusic.domain.use_case.PlayPlayback
@@ -87,6 +89,12 @@ class RemixEditorViewModel @Inject constructor(
     val timingData = mutableStateListOf<TimingData>()
     var currentIndex by mutableIntStateOf(0)
         private set
+
+    val rewardAdQuestionResource: Int
+        get() = when (val type = adInterface.rewardAdType) {
+            is RewardAd.Type.NewRemixes -> if (type.amount == 1) R.string.watch_reward_ad_for_one_remix else R.string.watch_reward_ad_for_more_remixes
+            else -> R.string.watch_reward_ad_for_one_remix
+        }
 
     val settings = settingsRepository.observe()
         .stateIn(
@@ -187,7 +195,11 @@ class RemixEditorViewModel @Inject constructor(
         }
     }
 
-    fun saveNewRemix(name: String, ignoreMaxRemixCount: Boolean = false, replaceExisting: Boolean = false) {
+    fun saveNewRemix(
+        name: String,
+        ignoreMaxRemixCount: Boolean = false,
+        replaceExisting: Boolean = false
+    ) {
         viewModelScope.launch {
             val mediaPosBefore = mediaBrowser.currentPosition
             val currentPlayback = mediaBrowser.currentPlayback.value

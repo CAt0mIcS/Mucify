@@ -17,6 +17,7 @@ class GoogleRewardAd(
     private val log: Logger
 ) : RewardAd {
     private var rewardedAd: RewardedAd? = null
+    override var type: RewardAd.Type? = null
 
     override fun load() {
         val adRequest = AdRequest.Builder().build()
@@ -28,11 +29,13 @@ class GoogleRewardAd(
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     log.warning("[TAdRew] Load Error: " + adError.message)
                     rewardedAd = null
+                    type = null
                 }
 
                 override fun onAdLoaded(ad: RewardedAd) {
                     log.debug("[TAdRew] Reward ad loaded successfully")
                     rewardedAd = ad
+                    type = RewardAd.Type.NewRemixes(ad.rewardItem.amount)
 
                     rewardedAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                         override fun onAdClicked() {
@@ -45,12 +48,14 @@ class GoogleRewardAd(
                             // Set the ad reference to null so you don't show the ad a second time.
                             log.debug("[TAdRew] Ad dismissed fullscreen content.")
                             rewardedAd = null
+                            type = null
                         }
 
                         override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                             // Called when ad fails to show.
                             log.debug("[TAdRew] Ad failed to show fullscreen content.")
                             rewardedAd = null
+                            type = null
                         }
 
                         override fun onAdImpression() {
@@ -74,7 +79,7 @@ class GoogleRewardAd(
 
     override fun show(activity: ComponentActivity, onRewardGranted: (RewardAd.Type, Int) -> Unit) {
         rewardedAd?.show(activity) { rewardItem ->
-            onRewardGranted(RewardAd.Type.fromString(rewardItem.type), rewardItem.amount)
+            onRewardGranted(type!!, rewardItem.amount)
         }
     }
 

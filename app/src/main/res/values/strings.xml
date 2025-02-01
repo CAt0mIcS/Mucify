@@ -47,4 +47,6 @@
     <string name="import_music_onboarding_title">Import Your Music</string>
     <string name="import_music_onboarding_description">To get started please select a folder where all your music is stored. You can add more directories in the settings. Alternatively import an existing database if you\'ve used the app before and exported it</string>
     <string name="import_database_onboarding_description">The following directories are used in the imported database file. Please give us permission to access these to be able to play music by selecting each music directory using the button bellow.</string>
+    <string name="watch_reward_ad_for_one_remix">Watch a short ad to permanently allow you to save one more remix</string>
+    <string name="watch_reward_ad_for_more_remixes">Watch a short ad to permanently allow you to save %1$s more remixes</string>
 </resources>

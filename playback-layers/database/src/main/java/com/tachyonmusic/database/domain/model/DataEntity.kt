@@ -36,7 +36,7 @@ data class DataEntity(
      * Presents the maximum allowed number of stored remixes. This number can be increased by watching
      * an ad
      */
-    var maxRemixCount: Int = 10,
+    var maxRemixCount: Int = 2,
     var onboardingCompleted: Boolean = false,
 
     @PrimaryKey var id: Int = 0,

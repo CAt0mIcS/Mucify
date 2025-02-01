@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.update
 interface AdInterface {
     // TODO: NativeAd should be com.tachyonmusic interface
     val nativeAppInstallAdCache: Flow<List<NativeAd>>
+    val rewardAdType: RewardAd.Type?
 
     fun initialize(activity: ComponentActivity)
     fun release()

@@ -366,7 +366,7 @@ fun RemixEditor(
                         )
                 ) {
                     Column {
-                        Text("Watch a short ad to permanently allow you to save one more remix")
+                        Text(stringResource(viewModel.rewardAdQuestionResource))
                         Row(
                             modifier = Modifier
                                 .padding(top = Theme.padding.medium)

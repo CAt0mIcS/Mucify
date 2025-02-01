@@ -39,6 +39,9 @@ class AndroidAdInterface(
     override val nativeAppInstallAdCache: Flow<List<NativeAd>> =
         _nativeAppInstallAdCache.debounce(300.milliseconds)
 
+    override val rewardAdType: RewardAd.Type?
+        get() = rewardAd.type
+
     private lateinit var nativeAppInstallAdLoader: AdLoader
 
     val isLoadingNativeInstallAd: Boolean

@@ -3,19 +3,14 @@ package com.tachyonmusic.domain.model
 import androidx.activity.ComponentActivity
 
 interface RewardAd {
+    val type: Type?
+
     fun load()
     fun unload()
     fun show(activity: ComponentActivity, onRewardGranted: (Type, Int) -> Unit)
 
-    sealed interface Type {
-        data object NewRemixes10 : Type
-        data object Invalid: Type
-
-        companion object {
-            fun fromString(str: String) = when(str) {
-                "0" -> NewRemixes10
-                else -> Invalid
-            }
-        }
+    sealed class Type(val amount: Int) {
+        class NewRemixes(numGrantedRemixes: Int) : Type(numGrantedRemixes)
+        data object Invalid: Type(-1)
     }
 }
