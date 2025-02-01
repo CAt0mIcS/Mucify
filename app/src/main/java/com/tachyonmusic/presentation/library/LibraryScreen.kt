@@ -59,6 +59,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.changedToDown
 import androidx.compose.ui.input.pointer.consumeDownChange
@@ -97,7 +98,6 @@ import kotlinx.coroutines.launch
 object LibraryScreen :
     BottomNavigationItem(R.string.btmNav_library, R.drawable.ic_library, "library") {
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     operator fun invoke(
         draggable: AnchoredDraggableState<SwipingStates>,
@@ -150,12 +150,13 @@ object LibraryScreen :
                 Row(
                     modifier = Modifier
                         .padding(vertical = Theme.padding.small)
+                        .fillMaxWidth()
                 ) {
                     var iconBounds by remember { mutableStateOf<Rect?>(null) }
                     ExposedDropdownMenuBox(
                         modifier = Modifier
                             .clip(Theme.shapes.extraLarge)
-                            .weight(1f)
+                            .weight(10f)
                             .pointerInput(Unit) {
                                 awaitPointerEventScope {
                                     while (true) {
@@ -193,7 +194,7 @@ object LibraryScreen :
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             TextField(
-                                modifier = Modifier.menuAnchor(),
+                                modifier = Modifier.menuAnchor().fillMaxWidth(),
                                 value = sortParams.type.asString(filterPlaybackType),
                                 textStyle = LocalTextStyle.current.copy(fontSize = 15.sp),
                                 colors = TextFieldDefaults.colors(
