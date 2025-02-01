@@ -15,13 +15,16 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -56,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.tachyonmusic.app.R
 import com.tachyonmusic.core.data.constants.PlaceholderArtwork
 import com.tachyonmusic.core.data.constants.PlaybackType
 import com.tachyonmusic.presentation.NavigationItem
@@ -103,100 +107,101 @@ object PlaybackSearchScreen : NavigationItem("playback_search/{playbackType}") {
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    start = Theme.padding.medium,
-                    top = Theme.padding.medium,
-                    end = Theme.padding.medium
-                )
+            modifier = Modifier.fillMaxSize()
         ) {
-            FilterItemRow(
-                filterPlaybackType = filterPlaybackType,
-                onFilterSongs = viewModel::onFilterSongs,
-                onFilterRemixes = viewModel::onFilterRemixes,
-                onFilterPlaylists = viewModel::onFilterPlaylists
-            )
-
-            BasicTextField(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = Theme.padding.medium
+                    .background(
+                        MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = Theme.shapes.extraLarge.copy(
+                            topStart = CornerSize(0.dp),
+                            topEnd = CornerSize(0.dp)
+                        )
                     )
-                    .shadow(Theme.shadow.medium, shape = Theme.shapes.medium)
-                    .clip(Theme.shapes.large)
-                    .defaultMinSize(
-                        minWidth = TextFieldDefaults.MinWidth,
-                        minHeight = TextFieldDefaults.MinHeight
-                    )
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused)
-                            keyboardController?.show()
-
-                    },
-                value = searchQuery,
-                onValueChange = { viewModel.search(it) },
-                textStyle = TextStyle.Default.copy(
-                    fontSize = 22.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
-                singleLine = true
-            ) { innerTextField ->
-                TextFieldDefaults.DecorationBox(
-                    value = searchQuery,
-                    innerTextField = innerTextField,
-                    enabled = true,
-                    singleLine = true,
-                    visualTransformation = VisualTransformation.None,
-                    interactionSource = interactionSource,
-                    isError = false,
-                    colors = TextFieldDefaults.colors().copy(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-
-                        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer
-                    ),
-                    placeholder = {
-                        Text(
-                            text = stringResource(androidx.appcompat.R.string.search_menu_title),
-                            fontSize = 22.sp
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Default.Search,
-                            contentDescription = "Search Playbacks",
-                            modifier = Modifier.scale(1.2f)
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            painterResource(searchLocation.icon),
-                            contentDescription = "Change search location",
-                            modifier = Modifier
-                                .scale(.9f)
-                                .clip(Theme.shapes.extraLarge)
-                                .clickable {
-                                    viewModel.updateSearchLocation(searchLocation.next)
-                                }
-                        )
-                    },
-                    contentPadding = PaddingValues(0.dp),
+            ) {
+                FilterItemRow(
+                    modifier = Modifier
+                        .padding(top = Theme.padding.medium)
+                        .shadow(Theme.shadow.extraLarge, shape = Theme.shapes.extraLarge),
+                    filterPlaybackType = filterPlaybackType,
+                    onFilterSongs = viewModel::onFilterSongs,
+                    onFilterRemixes = viewModel::onFilterRemixes,
+                    onFilterPlaylists = viewModel::onFilterPlaylists
                 )
+
+                BasicTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = Theme.padding.medium)
+                        .padding(horizontal = Theme.padding.medium)
+                        .shadow(Theme.shadow.medium, shape = Theme.shapes.medium)
+                        .clip(Theme.shapes.large)
+                        .focusRequester(focusRequester)
+                        .onFocusChanged {
+                            if (it.isFocused)
+                                keyboardController?.show()
+
+                        },
+                    value = searchQuery,
+                    onValueChange = { viewModel.search(it) },
+                    textStyle = TextStyle.Default.copy(
+                        fontSize = 22.sp,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
+                    singleLine = true
+                ) { innerTextField ->
+                    TextFieldDefaults.DecorationBox(
+                        value = searchQuery,
+                        innerTextField = innerTextField,
+                        enabled = true,
+                        singleLine = true,
+                        visualTransformation = VisualTransformation.None,
+                        interactionSource = interactionSource,
+                        isError = false,
+                        colors = TextFieldDefaults.colors().copy(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+
+                            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer
+                        ),
+                        placeholder = {
+                            Text(
+                                text = stringResource(androidx.appcompat.R.string.search_menu_title),
+                                fontSize = 22.sp
+                            )
+                        },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = "Search Playbacks",
+                                modifier = Modifier.scale(1.2f)
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                painterResource(searchLocation.icon),
+                                contentDescription = "Change search location",
+                                modifier = Modifier
+                                    .scale(.9f)
+                                    .clip(Theme.shapes.extraLarge)
+                                    .clickable {
+                                        viewModel.updateSearchLocation(searchLocation.next)
+                                    }
+                            )
+                        },
+                        contentPadding = PaddingValues(0.dp),
+                    )
+                }
+
+                Spacer(Modifier.height(Theme.padding.extraSmall + Theme.padding.medium))
             }
 
             Spacer(Modifier.height(Theme.padding.large))
             Box(
                 modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.surfaceContainerLowest,
-                        shape = Theme.shapes.large
-                    )
                     .clip(Theme.shapes.large)
                     .fillMaxHeight()
             ) {
@@ -212,15 +217,15 @@ object PlaybackSearchScreen : NavigationItem("playback_search/{playbackType}") {
                     if (searchResults.isEmpty()) {
                         item {
                             Text(
-                                "No Results Found",
-                                style = TextStyle.Default.copy(
+                                stringResource(R.string.no_items),
+                                style = LocalTextStyle.current.copy(
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                                     fontSize = 26.sp,
                                     textAlign = TextAlign.Center
                                 ),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = Theme.padding.large),
+                                    .padding(top = Theme.padding.large)
                             )
                         }
                     } else {

@@ -53,4 +53,5 @@
     <string name="select_artwork">Select Artwork</string>
     <string name="hide">Hide</string>
     <string name="delete">Delete</string>
+    <string name="no_items">No Items</string>
 </resources>

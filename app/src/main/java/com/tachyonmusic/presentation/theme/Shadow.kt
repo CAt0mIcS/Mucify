@@ -10,6 +10,7 @@ data class Shadow(
     val small: Dp = 4.dp,
     val medium: Dp = 8.dp,
     val large: Dp = 12.dp,
+    val extraLarge: Dp = 24.dp,
     val default: Dp = none
 )
 
