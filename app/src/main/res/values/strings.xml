@@ -49,4 +49,8 @@
     <string name="import_database_onboarding_description">The following directories are used in the imported database file. Please give us permission to access these to be able to play music by selecting each music directory using the button bellow.</string>
     <string name="watch_reward_ad_for_one_remix">Watch a short ad to permanently allow you to save one more remix</string>
     <string name="watch_reward_ad_for_more_remixes">Watch a short ad to permanently allow you to save %1$s more remixes</string>
+    <string name="set_metadata">Set Metadata</string>
+    <string name="select_artwork">Select Artwork</string>
+    <string name="hide">Hide</string>
+    <string name="delete">Delete</string>
 </resources>

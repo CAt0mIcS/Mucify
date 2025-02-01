@@ -268,6 +268,10 @@ class LibraryViewModel @Inject constructor(
         }
     }
 
+    fun flipSortOrder() {
+        playbackRepository.setSortingPreferences(sortParams.value.copy(order = !sortParams.value.order))
+    }
+
     private fun LibraryEntity.toPlayback() =
         when (playbackType) {
             is PlaybackType.Song -> songs.value.find { it.mediaId == mediaId }

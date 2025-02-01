@@ -6,6 +6,11 @@ import com.tachyonmusic.core.domain.playback.Playlist
 enum class SortOrder {
     Ascending, Descending;
 
+    operator fun not() = when(this) {
+        Ascending -> Descending
+        Descending -> Ascending
+    }
+
     companion object {
         fun fromInt(ordinal: Int) = entries.first { it.ordinal == ordinal }
     }

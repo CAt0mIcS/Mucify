@@ -5,9 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
@@ -94,6 +96,7 @@ fun HorizontalPlaybackView(
                 Icon(Icons.Default.MoreVert, contentDescription = "Playback options")
 
                 DropdownMenu(
+                    modifier = Modifier.width(IntrinsicSize.Max),
                     expanded = dropDownMenuExpanded,
                     onDismissRequest = onOptionsMenuClicked,
                     content = dropDownMenuContent
