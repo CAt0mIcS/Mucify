@@ -81,6 +81,7 @@ import com.tachyonmusic.presentation.core_components.HorizontalPlaybackView
 import com.tachyonmusic.presentation.core_components.SwipeDelete
 import com.tachyonmusic.presentation.entry.SwipingStates
 import com.tachyonmusic.presentation.library.component.FilterItem
+import com.tachyonmusic.presentation.library.component.FilterItemRow
 import com.tachyonmusic.presentation.library.search.PlaybackSearchScreen
 import com.tachyonmusic.presentation.theme.Theme
 import com.tachyonmusic.presentation.util.AdmobNativeAppInstallAd
@@ -133,48 +134,12 @@ object LibraryScreen :
         ) {
             item {
                 val filterPlaybackType by viewModel.filterType.collectAsState()
-                Row(
-                    modifier = Modifier
-                        .shadow(Theme.shadow.small, shape = Theme.shapes.extraLarge)
-                        .clip(Theme.shapes.extraLarge)
-                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
-                        .padding(
-                            start = Theme.padding.medium,
-                            top = Theme.padding.extraSmall,
-                            end = Theme.padding.medium,
-                            bottom = Theme.padding.extraSmall
-                        )
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Spacer(modifier = Modifier.width(2.dp))
-                    FilterItem(
-                        R.string.songs, selected = filterPlaybackType is PlaybackType.Song,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        viewModel.onFilterSongs()
-                    }
-
-                    Spacer(modifier = Modifier.width(16.dp))
-                    FilterItem(
-                        R.string.remixes,
-                        selected = filterPlaybackType is PlaybackType.Remix,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        viewModel.onFilterRemixes()
-                    }
-
-                    Spacer(modifier = Modifier.width(16.dp))
-                    FilterItem(
-                        R.string.playlists,
-                        selected = filterPlaybackType is PlaybackType.Playlist,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        viewModel.onFilterPlaylists()
-                    }
-                    Spacer(modifier = Modifier.width(2.dp))
-                }
+                FilterItemRow(
+                    filterPlaybackType,
+                    onFilterSongs = viewModel::onFilterSongs,
+                    onFilterRemixes = viewModel::onFilterRemixes,
+                    onFilterPlaylists = viewModel::onFilterPlaylists
+                )
             }
 
             item {
@@ -297,7 +262,9 @@ object LibraryScreen :
                     }
 
                     IconButton(
-                        modifier = Modifier.align(Alignment.CenterVertically).padding(start = Theme.padding.small),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(start = Theme.padding.small),
                         onClick = {
                             navController.navigate(
                                 PlaybackSearchScreen.route(mapOf("playbackType" to filterPlaybackType.toString()))

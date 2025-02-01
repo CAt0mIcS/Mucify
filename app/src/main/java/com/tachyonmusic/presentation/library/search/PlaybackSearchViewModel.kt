@@ -44,8 +44,6 @@ class PlaybackSearchViewModel @Inject constructor(
     private val playPlayback: PlayPlayback,
     private val loadArtworkForPlayback: LoadArtworkForPlayback
 ) : ViewModel() {
-    private var playbackType: PlaybackType = PlaybackType.Song.Local()
-
     private var _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
@@ -55,8 +53,11 @@ class PlaybackSearchViewModel @Inject constructor(
     private var _searchLocation = MutableStateFlow<SearchLocation>(SearchLocation.Local)
     val searchLocation = _searchLocation.asStateFlow()
 
+    private var _filterPlaybackType = MutableStateFlow<PlaybackType>(PlaybackType.Song.Local())
+    val filterPlaybackType = _filterPlaybackType.asStateFlow()
+
     val searchResults =
-        combine(searchQuery, searchLocation, itemDisplayRange) { query, location, itemRange ->
+        combine(searchQuery, searchLocation, itemDisplayRange, filterPlaybackType) { query, location, itemRange, playbackType ->
             when (location) {
                 SearchLocation.Local -> {
                     loadArtwork(
@@ -78,8 +79,7 @@ class PlaybackSearchViewModel @Inject constructor(
         )
 
 
-    fun search(query: String, playbackType: PlaybackType) {
-        this.playbackType = playbackType
+    fun search(query: String) {
         _searchQuery.update { query }
     }
 
@@ -93,6 +93,18 @@ class PlaybackSearchViewModel @Inject constructor(
 
     fun resetLoadingRange() {
         itemDisplayRange.update { 10 }
+    }
+
+    fun onFilterSongs() {
+        _filterPlaybackType.update { PlaybackType.Song.Local() }
+    }
+
+    fun onFilterRemixes() {
+        _filterPlaybackType.update { PlaybackType.Remix.Local() }
+    }
+
+    fun onFilterPlaylists() {
+        _filterPlaybackType.update { PlaybackType.Playlist.Local() }
     }
 
     fun onItemClicked(entity: LibraryEntity) {

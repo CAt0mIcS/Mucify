@@ -61,6 +61,7 @@ import com.tachyonmusic.core.data.constants.PlaybackType
 import com.tachyonmusic.presentation.NavigationItem
 import com.tachyonmusic.presentation.core_components.HorizontalPlaybackView
 import com.tachyonmusic.presentation.entry.SwipingStates
+import com.tachyonmusic.presentation.library.component.FilterItemRow
 import com.tachyonmusic.presentation.theme.Theme
 import kotlinx.coroutines.launch
 
@@ -75,13 +76,19 @@ object PlaybackSearchScreen : NavigationItem("playback_search/{playbackType}") {
         draggable: AnchoredDraggableState<SwipingStates>,
         viewModel: PlaybackSearchViewModel = hiltViewModel()
     ) {
-        val playbackType = PlaybackType.build(arguments.getString("playbackType")!!)
-
         LaunchedEffect(Unit) {
+            val playbackType = PlaybackType.build(arguments.getString("playbackType")!!)
             viewModel.resetLoadingRange()
+            when (playbackType) {
+                is PlaybackType.Song -> viewModel.onFilterSongs()
+                is PlaybackType.Remix -> viewModel.onFilterRemixes()
+                is PlaybackType.Playlist -> viewModel.onFilterPlaylists()
+                is PlaybackType.Ad -> {}
+            }
         }
 
         val searchLocation by viewModel.searchLocation.collectAsState()
+        val filterPlaybackType by viewModel.filterPlaybackType.collectAsState()
         val searchQuery by viewModel.searchQuery.collectAsState()
         val searchResults by viewModel.searchResults.collectAsState()
         val focusRequester = remember { FocusRequester() }
@@ -94,7 +101,23 @@ object PlaybackSearchScreen : NavigationItem("playback_search/{playbackType}") {
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
-        Column {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    start = Theme.padding.medium,
+                    top = Theme.padding.medium,
+                    end = Theme.padding.medium
+                )
+        ) {
+            FilterItemRow(
+                filterPlaybackType = filterPlaybackType,
+                onFilterSongs = viewModel::onFilterSongs,
+                onFilterRemixes = viewModel::onFilterRemixes,
+                onFilterPlaylists = viewModel::onFilterPlaylists
+            )
+
             BasicTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -116,9 +139,7 @@ object PlaybackSearchScreen : NavigationItem("playback_search/{playbackType}") {
 
                     },
                 value = searchQuery,
-                onValueChange = {
-                    viewModel.search(it, playbackType)
-                },
+                onValueChange = { viewModel.search(it) },
                 textStyle = TextStyle.Default.copy(
                     fontSize = 22.sp,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -199,7 +220,9 @@ object PlaybackSearchScreen : NavigationItem("playback_search/{playbackType}") {
                                     fontSize = 26.sp,
                                     textAlign = TextAlign.Center
                                 ),
-                                modifier = Modifier.fillMaxWidth().padding(top = Theme.padding.large),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = Theme.padding.large),
                             )
                         }
                     } else {
