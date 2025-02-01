@@ -178,18 +178,18 @@ class PlaybackRepositoryImpl(
         return entities.map { entity ->
             val underlyingSong = songs.find { it.mediaId == entity.mediaId.underlyingMediaId }
 
-            if (underlyingSong == null) {
-                eventChannel.push(
-                    PlaybackNotFoundEvent(
-                        UiText.StringResource(
-                            R.string.playback_for_remix_not_found,
-                            entity.songTitle,
-                            entity.title
-                        ),
-                        EventSeverity.Warning
-                    )
-                )
-            }
+//            if (underlyingSong == null) {
+//                eventChannel.push(
+//                    PlaybackNotFoundEvent(
+//                        UiText.StringResource(
+//                            R.string.playback_for_remix_not_found,
+//                            entity.songTitle,
+//                            entity.title
+//                        ),
+//                        EventSeverity.Warning
+//                    )
+//                )
+//            }
 
             entity.toPlayback(underlyingSong)
         }.sortedBy(sorting)
@@ -215,18 +215,18 @@ class PlaybackRepositoryImpl(
                     TODO("Invalid playlist item $playlistItem")
                 }
 
-                if (foundItem == null) {
-                    eventChannel.push(
-                        InvalidPlaylistItemEvent(
-                            UiText.StringResource(
-                                R.string.playback_for_playlist_not_found,
-                                playlistItem.uri?.path ?: "Unknown",
-                                entity.name
-                            ),
-                            EventSeverity.Warning
-                        )
-                    )
-                }
+//                if (foundItem == null) {
+//                    eventChannel.push(
+//                        InvalidPlaylistItemEvent(
+//                            UiText.StringResource(
+//                                R.string.playback_for_playlist_not_found,
+//                                playlistItem.uri?.path ?: "Unknown",
+//                                entity.name
+//                            ),
+//                            EventSeverity.Warning
+//                        )
+//                    )
+//                }
 
                 foundItem
             }
@@ -257,17 +257,17 @@ class PlaybackRepositoryImpl(
             val item = songs.find { historyItem.mediaId == it.mediaId }
                 ?: remixes.find { historyItem.mediaId == it.mediaId }
 
-            if (item == null) {
-                eventChannel.push(
-                    PlaybackNotFoundEvent(
-                        UiText.StringResource(
-                            R.string.playback_not_found,
-                            historyItem.mediaId.uri?.path ?: "Unknown"
-                        ),
-                        EventSeverity.Debug
-                    )
-                )
-            }
+//            if (item == null) {
+//                eventChannel.push(
+//                    PlaybackNotFoundEvent(
+//                        UiText.StringResource(
+//                            R.string.playback_not_found,
+//                            historyItem.mediaId.uri?.path ?: "Unknown"
+//                        ),
+//                        EventSeverity.Debug
+//                    )
+//                )
+//            }
 
             item
         }
