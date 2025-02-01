@@ -1,5 +1,6 @@
 package com.tachyonmusic.presentation.library
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.nativead.NativeAd
@@ -218,8 +219,8 @@ class LibraryViewModel @Inject constructor(
         }
     }
 
-    fun loadArtwork(range: IntRange) {
-        val rangeToUpdate = removeAdIndices(range)
+    fun loadArtwork(range: IntRange, playbackItems: List<LibraryEntity>) {
+        val rangeToUpdate = removeAdIndices(range, playbackItems)
         artworkLoadingRange.update { rangeToUpdate }
     }
 
@@ -294,8 +295,9 @@ class LibraryViewModel @Inject constructor(
      * The range received from the UI includes all ad indices which we don't need for ranged
      * loading of playback artwork. Function removes these unwanted indices
      */
-    private fun removeAdIndices(range: IntRange): IntRange {
-        val numAds = range.last / AD_INSERT_INTERVAL + 1
+    private fun removeAdIndices(range: IntRange, playbackItems: List<LibraryEntity>): IntRange {
+        val numAds =
+            playbackItems.count { it.playbackType is PlaybackType.Ad && nativeAppInstallAdCache.value.isNotEmpty() }
         return (range.first - numAds)..(range.last - numAds)
     }
 }

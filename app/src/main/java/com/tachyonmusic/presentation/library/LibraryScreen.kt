@@ -106,7 +106,8 @@ object LibraryScreen :
                     viewModel.loadArtwork(
                         kotlin.math.max(
                             firstVisibleIndex - (listState.layoutInfo.visibleItemsInfo.size + 8), 0
-                        )..firstVisibleIndex + listState.layoutInfo.visibleItemsInfo.size + 8
+                        )..firstVisibleIndex + listState.layoutInfo.visibleItemsInfo.size + 8,
+                        playbackItems
                     )
                 }
         }
