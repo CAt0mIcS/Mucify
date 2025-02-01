@@ -1,6 +1,7 @@
 package com.tachyonmusic.presentation.entry
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
@@ -27,16 +28,28 @@ fun NavigationGraph(
     miniPlayerHeight: Dp,
     swipeableState: AnchoredDraggableState<SwipingStates>
 ) {
-    AnimatedNavHost(navController, startDestination = HomeScreen.route()) {
-        composable(HomeScreen.route()) {
+    AnimatedNavHost(navController, startDestination = HomeScreen.route(), exitTransition = { ExitTransition.None }) {
+        composable(HomeScreen.route(), exitTransition = { fadeOut(tween(700)) }) {
             HomeScreen(miniPlayerHeight, swipeableState)
         }
-        composable(LibraryScreen.route()) {
+
+        composable(
+            LibraryScreen.route(),
+            exitTransition = {
+                // Change fadeOut transition if we're transitioning to [PlaybackSearchScreen]
+                if(PlaybackSearchScreen.route() == targetState.destination.route)
+                    fadeOut(tween(200))
+                else
+                    fadeOut(tween(700))
+            }
+        ) {
             LibraryScreen(swipeableState, navController)
         }
-        composable(ProfileScreen.route()) {
+
+        composable(ProfileScreen.route(), exitTransition = { fadeOut(tween(700)) }) {
             ProfileScreen()
         }
+
         composable(
             route = PlaybackSearchScreen.route(),
             arguments = PlaybackSearchScreen.arguments,
@@ -45,7 +58,7 @@ fun NavigationGraph(
                 fadeIn() + slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Up,
                     spring(
-                        stiffness = Spring.StiffnessMediumLow,
+                        stiffness = Spring.StiffnessLow,
                         visibilityThreshold = IntOffset.VisibilityThreshold
                     )
                 )

@@ -122,12 +122,10 @@ object PlaybackSearchScreen : NavigationItem("playback_search/{playbackType}") {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = Theme.padding.medium,
-                        end = Theme.padding.medium,
                         top = Theme.padding.medium
                     )
                     .shadow(Theme.shadow.medium, shape = Theme.shapes.medium)
-                    .clip(Theme.shapes.medium)
+                    .clip(Theme.shapes.large)
                     .defaultMinSize(
                         minWidth = TextFieldDefaults.MinWidth,
                         minHeight = TextFieldDefaults.MinHeight
