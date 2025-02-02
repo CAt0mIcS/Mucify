@@ -80,7 +80,8 @@ class AndroidNetworkMonitor(
         }
 
         awaitClose {
-            connectivityManager.unregisterNetworkCallback(callback)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                connectivityManager.unregisterNetworkCallback(callback)
         }
     }
 
