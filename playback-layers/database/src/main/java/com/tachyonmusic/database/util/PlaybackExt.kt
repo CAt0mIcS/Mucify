@@ -1,5 +1,7 @@
 package com.tachyonmusic.database.util
 
+import android.content.Context
+import android.net.Uri
 import com.tachyonmusic.core.ArtworkType
 import com.tachyonmusic.core.data.RemoteArtwork
 import com.tachyonmusic.core.domain.playback.Playback
@@ -8,6 +10,7 @@ import com.tachyonmusic.database.domain.model.PlaylistEntity
 import com.tachyonmusic.database.domain.model.RemixEntity
 import com.tachyonmusic.database.domain.model.SinglePlaybackEntity
 import com.tachyonmusic.database.domain.model.SongEntity
+import java.io.FileNotFoundException
 
 fun Playback.toEntity(): SinglePlaybackEntity =
     if (isSong) toSongEntity()
@@ -49,3 +52,13 @@ fun Playlist.toEntity() = PlaylistEntity(
     currentPlaylistIndex,
     timestampCreatedAddedEdited
 )
+
+fun Uri.isPlayable(context: Context) = try {
+    context.contentResolver.openInputStream(this)?.close() ?: false
+    true
+} catch (e: Exception) {
+    when (e) {
+        is FileNotFoundException, is IllegalArgumentException, is SecurityException -> false
+        else -> throw e
+    }
+}

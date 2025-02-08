@@ -1,6 +1,5 @@
 package com.tachyonmusic.presentation.entry
 
-import android.app.ActivityManager
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
@@ -29,10 +28,13 @@ import com.tachyonmusic.logger.domain.Logger
 import com.tachyonmusic.media.util.isGoogleCastAvailable
 import com.tachyonmusic.playback_layers.domain.UriPermissionRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 
@@ -77,20 +79,25 @@ class ActivityMain : AppCompatActivity(), MediaBrowserController.EventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adInterface.initialize(this)
+        setupUi()
 
-        // TODO: Load ads only when they might be necessary
-        adInterface.loadNativeInstallAds(this)
-        adInterface.loadRewardAd(this)
+        dataRepository.observe().onEach { data ->
+            onboardingCompleted.update { data.onboardingCompleted }
+        }.launchIn(lifecycleScope + Dispatchers.IO)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            adInterface.initialize(this@ActivityMain)
+
+            // TODO: Load ads only when they might be necessary
+            adInterface.loadNativeInstallAds(this@ActivityMain)
+            adInterface.loadRewardAd(this@ActivityMain)
+        }
 
         // Initialize the Cast context. This is required so that the media route button can be
         // created in the AppBar
         if (isGoogleCastAvailable(this))
             castContext = CastContext.getSharedInstance(this)
 
-        dataRepository.observe().onEach { data ->
-            onboardingCompleted.update { data.onboardingCompleted }
-        }.launchIn(lifecycleScope)
 
         volumeControlStream = AudioManager.STREAM_MUSIC
         mediaBrowser.registerLifecycle(lifecycle)
@@ -99,6 +106,7 @@ class ActivityMain : AppCompatActivity(), MediaBrowserController.EventListener {
         appUpdateManager = AppUpdateManagerFactory.create(this)
         performUpdateCheck()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -135,10 +143,6 @@ class ActivityMain : AppCompatActivity(), MediaBrowserController.EventListener {
             // TODO: Not working
             miniplayerSnapPosition.update { SwipingStates.EXPANDED }
         }
-    }
-
-    override fun onConnected() {
-        setupUi()
     }
 
 

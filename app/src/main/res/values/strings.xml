@@ -54,4 +54,5 @@
     <string name="hide">Hide</string>
     <string name="delete">Delete</string>
     <string name="no_items">No Items</string>
+    <string name="could_not_open_playback">Could not open playback \"%1s\"</string>
 </resources>

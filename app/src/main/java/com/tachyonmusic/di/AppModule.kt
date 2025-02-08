@@ -280,13 +280,17 @@ object AppUseCaseModule {
         getPlaylistForPlayback: GetPlaylistForPlayback,
         addNewPlaybackToHistory: AddNewPlaybackToHistory,
         logger: Logger,
-        eventChannel: EventChannel
+        eventChannel: EventChannel,
+        @ApplicationContext context: Context,
+        uriPermissionRepository: UriPermissionRepository
     ) = PlayPlayback(
         browser,
         getPlaylistForPlayback,
         addNewPlaybackToHistory,
         logger,
-        eventChannel
+        eventChannel,
+        context,
+        uriPermissionRepository
     )
 
     @Provides
