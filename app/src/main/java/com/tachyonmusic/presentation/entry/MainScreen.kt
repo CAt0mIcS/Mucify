@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +56,8 @@ import com.tachyonmusic.app.R
 import com.tachyonmusic.database.data.data_source.Database
 import com.tachyonmusic.presentation.core_components.UriPermissionDialog
 import com.tachyonmusic.presentation.entry.component.LoadingBox
+import com.tachyonmusic.presentation.home.HomeScreen
+import com.tachyonmusic.presentation.library.LibraryScreen
 import com.tachyonmusic.presentation.onboarding.OnboardingScreen
 import com.tachyonmusic.presentation.player.PlayerLayout
 import com.tachyonmusic.presentation.profile.component.OpenDocumentDialog
@@ -107,8 +110,11 @@ fun MainScreen(
                 LoadingBox()
             }
 
-            if(!onboardingCompleted) {
-                OnboardingScreen()
+            var startDestination by rememberSaveable { mutableStateOf(HomeScreen.route()) }
+            if (!onboardingCompleted) {
+                OnboardingScreen(
+                    onCompleted = { startDestination = LibraryScreen.route() }
+                )
                 return@Surface
             }
 
@@ -196,7 +202,8 @@ fun MainScreen(
                                         NavigationGraph(
                                             navController,
                                             miniPlayerHeight,
-                                            anchoredDraggableState
+                                            anchoredDraggableState,
+                                            startDestination
                                         )
                                     }
                                 },

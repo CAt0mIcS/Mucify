@@ -69,7 +69,7 @@ class ImportMusicOnboardingPage(override val index: Int) : OnboardingPage {
         }
         LaunchedEffect(pagerState.currentPage) {
             if (pagerState.currentPage == index)
-                userScrollEnabledState.update { musicImported }
+                userScrollEnabledState.update { readyToAdvance }
         }
 
         if (requiredMusicDirsAfterDbImport.isEmpty()) {

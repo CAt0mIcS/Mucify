@@ -60,6 +60,7 @@ object OnboardingScreen {
 
     @Composable
     operator fun invoke(
+        onCompleted: () -> Unit,
         viewModel: OnboardingViewModel = hiltViewModel()
     ) {
         val userScrollEnabledState = remember { MutableStateFlow(true) }
@@ -96,6 +97,7 @@ object OnboardingScreen {
                 pagerState.currentPage == pages.last().index,
                 onClick = {
                     viewModel.saveOnboardingState(true)
+                    onCompleted()
                 }) {
                 Text("Finish Setup")
             }

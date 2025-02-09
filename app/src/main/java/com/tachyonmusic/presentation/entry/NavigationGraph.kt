@@ -26,9 +26,10 @@ import com.tachyonmusic.presentation.profile.ProfileScreen
 fun NavigationGraph(
     navController: NavHostController,
     miniPlayerHeight: Dp,
-    swipeableState: AnchoredDraggableState<SwipingStates>
+    swipeableState: AnchoredDraggableState<SwipingStates>,
+    startDestination: String
 ) {
-    AnimatedNavHost(navController, startDestination = HomeScreen.route(), exitTransition = { ExitTransition.None }) {
+    AnimatedNavHost(navController, startDestination, exitTransition = { ExitTransition.None }) {
         composable(HomeScreen.route(), exitTransition = { fadeOut(tween(700)) }) {
             HomeScreen(miniPlayerHeight, swipeableState)
         }

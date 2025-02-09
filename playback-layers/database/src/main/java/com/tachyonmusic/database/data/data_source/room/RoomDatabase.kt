@@ -63,11 +63,13 @@ abstract class RoomDatabase : androidx.room.RoomDatabase(), Database {
             put("CustomizedSongs", Json.encodeToJsonElement(remixDao.getRemixes()))
             put("Playlists", Json.encodeToJsonElement(playlistDao.getPlaylists()))
             put("History", Json.encodeToJsonElement(historyDao.getHistory()))
-            put("Data", Json.encodeToJsonElement(dataDao.getData()))
         }
     )
 
     override suspend fun overrideFromJson(json: String) {
+        // Data is not stored in the exported database
+        val data = dataDao.getData() ?: DataEntity()
+
         clearAllTables()
 
         val obj = Json.decodeFromString<JsonObject>(json)
@@ -78,7 +80,6 @@ abstract class RoomDatabase : androidx.room.RoomDatabase(), Database {
             Json.decodeFromJsonElement<List<RemixEntity>>(obj["CustomizedSongs"]!!)
         val playlists = Json.decodeFromJsonElement<List<PlaylistEntity>>(obj["Playlists"]!!)
         val history = Json.decodeFromJsonElement<List<HistoryEntity>>(obj["History"]!!)
-        val data = Json.decodeFromJsonElement<DataEntity>(obj["Data"] ?: buildJsonObject { })
 
         settingsDao.setSettings(settings)
         songDao.addAll(songs)
