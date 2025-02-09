@@ -90,11 +90,12 @@ class RemixEditorViewModel @Inject constructor(
     var currentIndex by mutableIntStateOf(0)
         private set
 
-    val rewardAdQuestionResource: Int
-        get() = when (val type = adInterface.rewardAdType) {
-            is RewardAd.Type.NewRemixes -> if (type.amount == 1) R.string.watch_reward_ad_for_one_remix else R.string.watch_reward_ad_for_more_remixes
-            else -> R.string.watch_reward_ad_for_one_remix
-        }
+    /**
+     * TODO: Should be state
+     * TODO: What happens if [RewardAd] is not yet loaded?
+     */
+    val rewardAdType: RewardAd.Type?
+        get() = adInterface.rewardAdType
 
     val settings = settingsRepository.observe()
         .stateIn(

@@ -48,6 +48,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tachyonmusic.app.R
+import com.tachyonmusic.domain.model.RewardAd
 import com.tachyonmusic.domain.use_case.player.SaveRemixToDatabase
 import com.tachyonmusic.presentation.core_components.ErrorDialog
 import com.tachyonmusic.presentation.player.RemixEditorViewModel
@@ -366,7 +367,22 @@ fun RemixEditor(
                         )
                 ) {
                     Column {
-                        Text(stringResource(viewModel.rewardAdQuestionResource))
+                        val rewardText = when (val type = viewModel.rewardAdType) {
+                            is RewardAd.Type.NewRemixes ->
+                                if (type.amount == 1)
+                                    stringResource(R.string.watch_reward_ad_for_one_remix)
+                                else
+                                    stringResource(R.string.watch_reward_ad_for_more_remixes, type.amount)
+                            else -> {
+                                // No reward ad available, ignore max remix count (TODO: Should be checked in ViewModel)
+                                LaunchedEffect(Unit) {
+                                    viewModel.saveNewRemix(remixName, ignoreMaxRemixCount = true)
+                                }
+                                return@Box
+                            }
+                        }
+
+                        Text(rewardText)
                         Row(
                             modifier = Modifier
                                 .padding(top = Theme.padding.medium)
