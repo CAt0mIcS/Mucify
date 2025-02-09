@@ -79,7 +79,6 @@ class ActivityMain : AppCompatActivity(), MediaBrowserController.EventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupUi()
 
         dataRepository.observe().onEach { data ->
             onboardingCompleted.update { data.onboardingCompleted }
@@ -157,6 +156,10 @@ class ActivityMain : AppCompatActivity(), MediaBrowserController.EventListener {
             CastButtonFactory.setUpMediaRouteButton(this, menu, R.id.media_route_menu_item)
         }
         return true
+    }
+
+    override fun onConnected() {
+        setupUi()
     }
 
     private fun setupUi() {
