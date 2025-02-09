@@ -3,6 +3,7 @@ package com.tachyonmusic.presentation.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tachyonmusic.core.ColorScheme
 import com.tachyonmusic.domain.repository.StateRepository
 import com.tachyonmusic.database.domain.model.SettingsEntity
 import com.tachyonmusic.database.domain.repository.SettingsRepository
@@ -106,6 +107,12 @@ class ProfileViewModel @Inject constructor(
     fun dynamicColorsChanged(enabled: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.update(dynamicColors = enabled)
+        }
+    }
+
+    fun colorSchemeChanged(colorScheme: ColorScheme) {
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.update(colorScheme = colorScheme)
         }
     }
 

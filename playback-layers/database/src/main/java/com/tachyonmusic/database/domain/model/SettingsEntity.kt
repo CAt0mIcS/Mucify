@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tachyonmusic.core.ColorScheme
 import com.tachyonmusic.util.Duration
 import com.tachyonmusic.util.ms
 import com.tachyonmusic.util.sec
@@ -54,6 +55,9 @@ data class SettingsEntity(
     @ColumnInfo(name = "playNewlyCreatedCustomizedSong")
     var playNewlyCreatedRemix: Boolean = true,
 
+    @ColumnInfo(defaultValue = ColorScheme.SYSTEM_NAME)
+    var colorScheme: ColorScheme = ColorScheme.System,
+
     var excludedSongFiles: List<Uri> = emptyList(),
     var musicDirectories: List<Uri> = emptyList(),
     @PrimaryKey var id: Int = 0
@@ -77,6 +81,7 @@ object SettingsEntitySerializer : KSerializer<SettingsEntity> {
         element<Int>("id", isOptional = true)
 
         element<Boolean>("dynamicColors", isOptional = true)
+        element<String>("colorScheme", isOptional = true)
     }
 
     override fun deserialize(decoder: Decoder) = decoder.decodeStructure(descriptor) {
@@ -92,6 +97,7 @@ object SettingsEntitySerializer : KSerializer<SettingsEntity> {
         var animateText = true
         var shouldMillisecondsBeShown = false
         var playNewlyCreatedRemix = true
+        var colorScheme: ColorScheme = ColorScheme.System
         var excludedSongFiles: List<Uri> = emptyList()
         var musicDirectories: List<Uri> = emptyList()
         var id = 0
@@ -125,6 +131,7 @@ object SettingsEntitySerializer : KSerializer<SettingsEntity> {
 
                 13 -> id = decodeIntElement(descriptor, 13)
                 14 -> dynamicColors = decodeBooleanElement(descriptor, 14)
+                15 -> colorScheme = ColorScheme.fromString(decodeStringElement(descriptor, 15))
 
                 else -> throw SerializationException("Unexpected index $index")
             }
@@ -143,6 +150,7 @@ object SettingsEntitySerializer : KSerializer<SettingsEntity> {
             animateText,
             shouldMillisecondsBeShown,
             playNewlyCreatedRemix,
+            colorScheme,
             excludedSongFiles,
             musicDirectories,
             id
@@ -174,6 +182,7 @@ object SettingsEntitySerializer : KSerializer<SettingsEntity> {
                 value.musicDirectories.map { it.toString() })
             encodeIntElement(descriptor, 13, value.id)
             encodeBooleanElement(descriptor, 14, value.dynamicColors)
+            encodeStringElement(descriptor, 15, value.colorScheme.name)
         }
     }
 }

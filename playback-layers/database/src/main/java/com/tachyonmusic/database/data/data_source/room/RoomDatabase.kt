@@ -37,9 +37,11 @@ import kotlinx.serialization.json.encodeToJsonElement
         HistoryEntity::class,
         DataEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
-    autoMigrations = []
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ]
 )
 @TypeConverters(Converters::class)
 abstract class RoomDatabase : androidx.room.RoomDatabase(), Database {

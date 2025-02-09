@@ -70,7 +70,8 @@ class MainViewModel @Inject constructor(
                     ComposeSettings(
                         settings.animateText,
                         settings.dynamicColors,
-                        settings.audioUpdateInterval
+                        settings.audioUpdateInterval,
+                        settings.colorScheme
                     )
                 }
 

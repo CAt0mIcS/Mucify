@@ -32,4 +32,8 @@
     <string name="reverb_plate_name">Plate</string>
     <string name="reverb_custom">Custom</string>
 
+    <string name="colorscheme_system">System Theme</string>
+    <string name="colorscheme_white">White Theme</string>
+    <string name="colorscheme_dark">Dark Theme</string>
+
 </resources>

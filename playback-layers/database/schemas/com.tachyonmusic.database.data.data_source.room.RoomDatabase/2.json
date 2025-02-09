@@ -1,0 +1,540 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "014cd1c79e30670f3eba7d0f2daef224",
+    "entities": [
+      {
+        "tableName": "Settings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ignoreAudioFocus` INTEGER NOT NULL, `autoDownloadAlbumArtwork` INTEGER NOT NULL, `autoDownloadAlbumArtworkWifiOnly` INTEGER NOT NULL, `combineDifferentPlaybackTypes` INTEGER NOT NULL, `dynamicColors` INTEGER NOT NULL DEFAULT false, `audioUpdateInterval` INTEGER NOT NULL, `maxPlaybacksInHistory` INTEGER NOT NULL, `seekForwardIncrement` INTEGER NOT NULL, `seekBackIncrement` INTEGER NOT NULL, `animateText` INTEGER NOT NULL, `shouldMillisecondsBeShown` INTEGER NOT NULL, `playNewlyCreatedCustomizedSong` INTEGER NOT NULL, `colorScheme` TEXT NOT NULL DEFAULT 'sys', `excludedSongFiles` TEXT NOT NULL, `musicDirectories` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "ignoreAudioFocus",
+            "columnName": "ignoreAudioFocus",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "autoDownloadSongMetadata",
+            "columnName": "autoDownloadAlbumArtwork",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "autoDownloadSongMetadataWifiOnly",
+            "columnName": "autoDownloadAlbumArtworkWifiOnly",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "combineDifferentPlaybackTypes",
+            "columnName": "combineDifferentPlaybackTypes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dynamicColors",
+            "columnName": "dynamicColors",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "audioUpdateInterval",
+            "columnName": "audioUpdateInterval",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxPlaybacksInHistory",
+            "columnName": "maxPlaybacksInHistory",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seekForwardIncrement",
+            "columnName": "seekForwardIncrement",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seekBackIncrement",
+            "columnName": "seekBackIncrement",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "animateText",
+            "columnName": "animateText",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "shouldMillisecondsBeShown",
+            "columnName": "shouldMillisecondsBeShown",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playNewlyCreatedRemix",
+            "columnName": "playNewlyCreatedCustomizedSong",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "colorScheme",
+            "columnName": "colorScheme",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'sys'"
+          },
+          {
+            "fieldPath": "excludedSongFiles",
+            "columnName": "excludedSongFiles",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "musicDirectories",
+            "columnName": "musicDirectories",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Songs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`isHidden` INTEGER NOT NULL, `artworkType` TEXT NOT NULL, `artworkUrl` TEXT, `album` TEXT DEFAULT null, `mbid` TEXT DEFAULT null, `title` TEXT NOT NULL, `artist` TEXT NOT NULL, `duration` INTEGER NOT NULL, `mediaId` TEXT NOT NULL, `timestampCreatedAddedEdited` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`mediaId`))",
+        "fields": [
+          {
+            "fieldPath": "isHidden",
+            "columnName": "isHidden",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artworkType",
+            "columnName": "artworkType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artworkUrl",
+            "columnName": "artworkUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "album",
+            "columnName": "album",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "null"
+          },
+          {
+            "fieldPath": "mbid",
+            "columnName": "mbid",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "null"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artist",
+            "columnName": "artist",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "mediaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestampCreatedAddedEdited",
+            "columnName": "timestampCreatedAddedEdited",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "mediaId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "CustomizedSongs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`songTitle` TEXT NOT NULL, `songArtist` TEXT NOT NULL, `songDuration` INTEGER NOT NULL, `timingData` TEXT, `currentTimingDataIndex` INTEGER NOT NULL, `bassBoost` INTEGER, `virtualizerStrength` INTEGER, `equalizerBands` TEXT, `title` TEXT NOT NULL, `artist` TEXT NOT NULL, `duration` INTEGER NOT NULL, `mediaId` TEXT NOT NULL, `timestampCreatedAddedEdited` INTEGER NOT NULL DEFAULT 0, `speed` REAL, `pitch` REAL, `volume` REAL, `roomLevel` INTEGER, `roomHFLevel` INTEGER, `decayTime` INTEGER, `decayHFRatio` INTEGER, `reflectionsLevel` INTEGER, `reflectionsDelay` INTEGER, `reverbLevel` INTEGER, `reverbDelay` INTEGER, `diffusion` INTEGER, `density` INTEGER, PRIMARY KEY(`mediaId`))",
+        "fields": [
+          {
+            "fieldPath": "songTitle",
+            "columnName": "songTitle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "songArtist",
+            "columnName": "songArtist",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "songDuration",
+            "columnName": "songDuration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timingData",
+            "columnName": "timingData",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "currentTimingDataIndex",
+            "columnName": "currentTimingDataIndex",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bassBoost",
+            "columnName": "bassBoost",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "virtualizerStrength",
+            "columnName": "virtualizerStrength",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "equalizerBands",
+            "columnName": "equalizerBands",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artist",
+            "columnName": "artist",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "mediaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestampCreatedAddedEdited",
+            "columnName": "timestampCreatedAddedEdited",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "playbackParameters.speed",
+            "columnName": "speed",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "playbackParameters.pitch",
+            "columnName": "pitch",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "playbackParameters.volume",
+            "columnName": "volume",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.roomLevel",
+            "columnName": "roomLevel",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.roomHFLevel",
+            "columnName": "roomHFLevel",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.decayTime",
+            "columnName": "decayTime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.decayHFRatio",
+            "columnName": "decayHFRatio",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.reflectionsLevel",
+            "columnName": "reflectionsLevel",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.reflectionsDelay",
+            "columnName": "reflectionsDelay",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.reverbLevel",
+            "columnName": "reverbLevel",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.reverbDelay",
+            "columnName": "reverbDelay",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.diffusion",
+            "columnName": "diffusion",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reverb.density",
+            "columnName": "density",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "mediaId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Playlists",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `items` TEXT NOT NULL, `currentItemIndex` INTEGER NOT NULL, `mediaId` TEXT NOT NULL, `timestampCreatedAddedEdited` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`mediaId`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "items",
+            "columnName": "items",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentItemIndex",
+            "columnName": "currentItemIndex",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "mediaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestampCreatedAddedEdited",
+            "columnName": "timestampCreatedAddedEdited",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "mediaId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "PlaybackEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mediaId` TEXT NOT NULL, `timestampCreatedAddedEdited` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`mediaId`))",
+        "fields": [
+          {
+            "fieldPath": "mediaId",
+            "columnName": "mediaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestampCreatedAddedEdited",
+            "columnName": "timestampCreatedAddedEdited",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "mediaId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "History",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mediaId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, PRIMARY KEY(`mediaId`))",
+        "fields": [
+          {
+            "fieldPath": "mediaId",
+            "columnName": "mediaId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "mediaId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Data",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recentlyPlayedMediaId` TEXT, `currentPositionInRecentlyPlayedPlayback` INTEGER NOT NULL, `recentlyPlayedDuration` INTEGER NOT NULL, `recentlyPlayedArtworkType` TEXT NOT NULL, `recentlyPlayedArtworkUrl` TEXT, `repeatMode` INTEGER NOT NULL, `maxRemixCount` INTEGER NOT NULL, `onboardingCompleted` INTEGER NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "recentlyPlayedMediaId",
+            "columnName": "recentlyPlayedMediaId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "currentPositionInRecentlyPlayedPlayback",
+            "columnName": "currentPositionInRecentlyPlayedPlayback",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recentlyPlayedDuration",
+            "columnName": "recentlyPlayedDuration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recentlyPlayedArtworkType",
+            "columnName": "recentlyPlayedArtworkType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recentlyPlayedArtworkUrl",
+            "columnName": "recentlyPlayedArtworkUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "repeatMode",
+            "columnName": "repeatMode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxRemixCount",
+            "columnName": "maxRemixCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "onboardingCompleted",
+            "columnName": "onboardingCompleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '014cd1c79e30670f3eba7d0f2daef224')"
+    ]
+  }
+}

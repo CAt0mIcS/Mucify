@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.tachyonmusic.app.R
+import com.tachyonmusic.core.ColorScheme
 
 
 private val lightScheme = lightColorScheme(
@@ -255,16 +256,14 @@ private val highContrastDarkColorScheme = darkColorScheme(
 )
 
 
-
-
-
-
 @Composable
 fun TachyonTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     settings: ComposeSettings = ComposeSettings(),
     content: @Composable () -> Unit
 ) {
+    val darkTheme = settings.colorScheme is ColorScheme.Dark ||
+            (settings.colorScheme is ColorScheme.System && isSystemInDarkTheme())
+
     val colors = when {
         settings.dynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current

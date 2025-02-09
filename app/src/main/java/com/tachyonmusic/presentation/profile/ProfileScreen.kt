@@ -1,5 +1,6 @@
 package com.tachyonmusic.presentation.profile
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,12 +19,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,10 +39,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -43,12 +54,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tachyonmusic.app.R
+import com.tachyonmusic.core.ColorScheme
 import com.tachyonmusic.database.data.data_source.Database
+import com.tachyonmusic.playback_layers.SortOrder
 import com.tachyonmusic.presentation.BottomNavigationItem
 import com.tachyonmusic.presentation.core_components.UriPermissionDialog
 import com.tachyonmusic.presentation.profile.component.CreateFileDialog
 import com.tachyonmusic.presentation.profile.component.OpenDocumentDialog
 import com.tachyonmusic.presentation.theme.Theme
+import com.tachyonmusic.presentation.util.asString
 import com.tachyonmusic.util.ms
 import com.tachyonmusic.util.sec
 
@@ -116,6 +130,69 @@ object ProfileScreen :
                     checked = settings.dynamicColors,
                     onCheckedChange = viewModel::dynamicColorsChanged
                 )
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(start = Theme.padding.medium)
+                    .fillMaxWidth()
+            ) {
+                Text("Color Scheme")
+
+                var colorSchemeExpanded by remember { mutableStateOf(false) }
+
+                ExposedDropdownMenuBox(
+                    modifier = Modifier.padding(start = Theme.padding.large),
+                    expanded = colorSchemeExpanded,
+                    onExpandedChange = {
+                        colorSchemeExpanded = !colorSchemeExpanded
+                    }) {
+                    TextField(
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(),
+                        value = stringResource(settings.colorScheme.stringRes),
+                        textStyle = LocalTextStyle.current.copy(fontSize = 15.sp),
+                        onValueChange = { },
+                        readOnly = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = colorSchemeExpanded)
+                        }
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = colorSchemeExpanded,
+                        onDismissRequest = { colorSchemeExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(ColorScheme.System.stringRes)) },
+                            onClick = {
+                                viewModel.colorSchemeChanged(ColorScheme.System)
+                                colorSchemeExpanded = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
+
+                        DropdownMenuItem(
+                            text = { Text(stringResource(ColorScheme.Dark.stringRes)) },
+                            onClick = {
+                                viewModel.colorSchemeChanged(ColorScheme.Dark)
+                                colorSchemeExpanded = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
+
+                        DropdownMenuItem(
+                            text = { Text(stringResource(ColorScheme.White.stringRes)) },
+                            onClick = {
+                                viewModel.colorSchemeChanged(ColorScheme.White)
+                                colorSchemeExpanded = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
+
+                    }
+                }
             }
 
             Setting(

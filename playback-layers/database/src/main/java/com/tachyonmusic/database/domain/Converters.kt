@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.room.TypeConverter
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
+import com.tachyonmusic.core.ColorScheme
 import com.tachyonmusic.core.RepeatMode
 import com.tachyonmusic.core.domain.MediaId
 import com.tachyonmusic.core.domain.TimingData
@@ -86,4 +87,11 @@ object Converters {
 
     @TypeConverter
     fun fromListUriToListString(value: List<Uri>?) = value?.map { it.toString() }
+
+
+    @TypeConverter
+    fun fromStringToColorScheme(value: String?) = value?.let { ColorScheme.fromString(it) }
+
+    @TypeConverter
+    fun fromColorSchemeToString(value: ColorScheme?) = value?.name
 }

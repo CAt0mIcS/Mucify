@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.tachyonmusic.core.ColorScheme
 import com.tachyonmusic.database.domain.model.SETTINGS_DATABASE_TABLE_NAME
 import com.tachyonmusic.database.domain.model.SettingsEntity
 import com.tachyonmusic.util.Duration
@@ -60,6 +61,9 @@ interface SettingsDao {
 
     @Query("UPDATE $SETTINGS_DATABASE_TABLE_NAME SET playNewlyCreatedCustomizedSong=:value")
     suspend fun setPlayNewlyCreatedCustomizedSong(value: Boolean)
+
+    @Query("UPDATE $SETTINGS_DATABASE_TABLE_NAME SET colorScheme=:value")
+    suspend fun setColorScheme(value: ColorScheme)
 
     @Query("UPDATE $SETTINGS_DATABASE_TABLE_NAME SET excludedSongFiles=:excludedFiles")
     suspend fun setExcludedSongFiles(excludedFiles: List<Uri>)
