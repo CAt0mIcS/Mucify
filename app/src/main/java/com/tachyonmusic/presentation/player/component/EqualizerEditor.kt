@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.systemGestureExclusion
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
@@ -24,10 +25,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tachyonmusic.core.ReverbConfig
 import com.tachyonmusic.core.domain.model.mDb
@@ -100,8 +103,10 @@ fun EqualizerEditor(
         }
 
         // TODO: Worth storing over multiple UI recreations? E.g. should be saved as setting in db?
-        var syncSpeedPitch by remember { mutableStateOf(true) }
-        var preciseInput by remember { mutableStateOf(false) }
+        var syncSpeedPitch by rememberSaveable {
+            mutableStateOf(playbackParams.speed == playbackParams.pitch)
+        }
+        var preciseInput by rememberSaveable { mutableStateOf(false) }
 
         CheckboxText(
             checked = preciseInput,
@@ -119,7 +124,9 @@ fun EqualizerEditor(
                     else
                         viewModel.setSpeed(it)
                 },
-                modifier = Modifier.padding(horizontal = Theme.padding.medium)
+                modifier = Modifier.padding(horizontal = Theme.padding.medium),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             Text(text = "Pitch")
@@ -131,7 +138,9 @@ fun EqualizerEditor(
                     else
                         viewModel.setPitch(it)
                 },
-                modifier = Modifier.padding(horizontal = Theme.padding.medium)
+                modifier = Modifier.padding(horizontal = Theme.padding.medium),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         } else {
             val minValue = .3f // TODO: Setting?
@@ -190,6 +199,7 @@ fun EqualizerEditor(
                         value = selectedEqualizerText,
                         onValueChange = {},
                         readOnly = true,
+                        singleLine = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = equalizerPresetMenuExpanded) },
                         modifier = Modifier.menuAnchor()
                     )
@@ -265,6 +275,7 @@ fun EqualizerEditor(
                     value = stringResource(selectedReverbText),
                     onValueChange = {},
                     readOnly = true,
+                    singleLine = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = reverbPresetMenuExpanded) },
                     modifier = Modifier.menuAnchor()
                 )

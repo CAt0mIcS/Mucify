@@ -326,7 +326,8 @@ fun RemixEditor(
                 Column {
                     TextField(
                         value = remixName,
-                        onValueChange = { remixName = it })
+                        onValueChange = { remixName = it },
+                        singleLine = true)
                     Button(
                         onClick = {
                             viewModel.saveNewRemix(
