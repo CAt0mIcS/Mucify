@@ -15,6 +15,6 @@
 local.properties
 app/release/*.*
 buildsrc/build/
-.idea/
+/.idea/
 nativetemplates/build
 app/release
